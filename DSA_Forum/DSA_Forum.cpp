@@ -1,19 +1,39 @@
 #include <iostream>
+#include <fstream>
+#include <string>
 using namespace std;
 
 int main()
 {
+    /*
     int choice;
-    cout << "Forum" << endl;
+    cout << "Forum\n" << endl;
     cout << "1. C++ Programming" << endl;
     cout << "2. Battle Cats" << endl;
-    cout << "What is your choice?" << endl;
+    cout << "What's your choice?" << endl;
     cin >> choice;
     if (choice == 1)
         cout << "I love C++!";
     else
-        cout << "CATS!" << endl;
+        cout << "CATS!" << endl;*/
+
+    fstream newfile;
+    newfile.open("Profile.txt", ios::out);  // open a file to perform write operation using file object
+    if (newfile.is_open()) { //checking whether the file is open {
+        newfile << "Username: Denzel Lee \nPassword: Pass123\n";
+    }//inserting text
+        newfile.close(); //close the file object
+    
+    newfile.open("Profile.txt", ios::in); //open a file to perform read operation using file object
+    if (newfile.is_open()) { //checking whether the file is open
+        string tp;
+        while (getline(newfile, tp)) { //read data from file object and put it into string.
+            cout << tp << "\n"; //print the data of the string
+        }
+        newfile.close(); //close the file object.
+    }
 }
+
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
