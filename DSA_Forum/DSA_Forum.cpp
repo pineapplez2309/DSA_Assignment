@@ -1,12 +1,18 @@
-// DSA_Forum.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
-
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    int choice;
+    cout << "Forum" << endl;
+    cout << "1. C++ Programming" << endl;
+    cout << "2. Battle Cats" << endl;
+    cout << "What is your choice?" << endl;
+    cin >> choice;
+    if (choice == 1)
+        cout << "I love C++!";
+    else
+        cout << "CATS!" << endl;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
