@@ -2,10 +2,10 @@
 #include <fstream>
 #include <string>
 using namespace std;
-
+/*
 int main()
 {
-    /*
+    
     int choice;
     cout << "Forum\n" << endl;
     cout << "1. C++ Programming" << endl;
@@ -15,7 +15,7 @@ int main()
     if (choice == 1)
         cout << "I love C++!";
     else
-        cout << "CATS!" << endl;*/
+        cout << "CATS!" << endl;
 
     fstream newfile;
     newfile.open("Profile.txt", ios::out);  // open a file to perform write operation using file object
@@ -33,7 +33,65 @@ int main()
         newfile.close(); //close the file object.
     }
 }
+*/
 
+    bool IsLoggedIn()
+    {
+        string username, password, un, pw;
+
+        cout << "Enter username: "; cin >> username;
+        cout << "Enter password: "; cin >> password;
+
+        ifstream read("data\\" + username + ".txt");
+        getline(read, un);
+        getline(read, pw);
+
+        if (un == username && pw == password)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    int main()
+    {
+        int choice;
+        cout << "1:Register\n2:Login\nYour Choice: "; cin >> choice;
+        if (choice == 1)
+        {
+            string username, password;
+
+            cout << "Enter a username: "; cin >> username;
+            cout << "Enter a password: "; cin >> password;
+
+            ofstream file;
+            file.open("data\\" + username + ".txt");
+            file << username << endl << password;
+            file.close();
+
+            main();
+        }
+        else if (choice == 2)
+        {
+            bool status = IsLoggedIn();
+
+            if (status)
+            {
+                cout << "Successfully logged in" << endl;
+                system("pause");
+                return 1;
+            }
+            else
+            {
+                cout << "Failed to login!" << endl;
+                system("Pause");
+                return 0;
+            }
+        }
+    }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
