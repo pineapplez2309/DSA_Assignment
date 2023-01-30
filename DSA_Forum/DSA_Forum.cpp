@@ -35,7 +35,7 @@ int main()
 }
 */
 
-bool IsLoggedIn()   {
+/*bool IsLoggedIn() {
         string username, password, un, pw;
 
         cout << "Enter username: "; cin >> username;
@@ -53,7 +53,7 @@ bool IsLoggedIn()   {
         {
             return false;
         }
-}
+}*/
 
 bool authenticate(const string& username, const string& password) {
     std::ifstream file("Profile.txt");
@@ -62,7 +62,6 @@ bool authenticate(const string& username, const string& password) {
     while (file) {
         getline(file, fusername, ';'); // use ; as delimiter
         getline(file, fpassword); // use line end as delimiter
-        // remember - delimiter readed from input but not added to output
         if (fusername == username && fpassword == password)
             return true;
     }
