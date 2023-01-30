@@ -35,8 +35,7 @@ int main()
 }
 */
 
-    bool IsLoggedIn()
-    {
+bool IsLoggedIn()   {
         string username, password, un, pw;
 
         cout << "Enter username: "; cin >> username;
@@ -54,10 +53,24 @@ int main()
         {
             return false;
         }
+}
+
+bool authenticate(const string& username, const string& password) {
+    std::ifstream file("Profile.txt");
+    std::string fusername, fpassword;
+
+    while (file) {
+        getline(file, fusername, ';'); // use ; as delimiter
+        getline(file, fpassword); // use line end as delimiter
+        // remember - delimiter readed from input but not added to output
+        if (fusername == username && fpassword == password)
+            return true;
     }
 
-    int main()
-    {
+    return false;
+}
+
+ int main()   {
         int choice;
         cout << "1:Register\n2:Login\nYour Choice: "; cin >> choice;
         if (choice == 1)
@@ -68,16 +81,19 @@ int main()
             cout << "Enter a password: "; cin >> password;
 
             ofstream file;
-            file.open("data\\" + username + ".txt");
-            file << username << endl << password;
+            file.open("Profile.txt", ios_base::app);
+            file << username << ";" << password << endl;
             file.close();
-
             main();
         }
         else if (choice == 2)
         {
-            bool status = IsLoggedIn();
+            string username, password;
 
+            cout << "Enter a username: "; cin >> username;
+            cout << "Enter a password: "; cin >> password;
+            bool status = authenticate(username, password);
+            return (int)authenticate(username, password);
             if (status)
             {
                 cout << "Successfully logged in" << endl;
@@ -91,15 +107,5 @@ int main()
                 return 0;
             }
         }
-    }
+ }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
