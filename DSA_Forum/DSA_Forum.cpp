@@ -93,7 +93,6 @@ bool authenticate(const string& username, const string& password) {
             cout << "Enter a username: "; cin >> username;
             cout << "Enter a password: "; cin >> password;
             bool status = authenticate(username, password);
-            return (int)authenticate(username, password);
             if (status)
             {
                 cout << "Successfully logged in" << endl;
