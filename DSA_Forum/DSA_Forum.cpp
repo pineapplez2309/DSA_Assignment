@@ -2,8 +2,10 @@
 #include <fstream>
 #include <string>
 #include <regex>
+#include "List.h"
 using namespace std;
 
+void Createtopic();
 
 /*bool IsLoggedIn() {
         string username, password, un, pw;
@@ -45,6 +47,39 @@ bool isNumber(string Schoice) {
     else return false;
 }
 
+
+void topicmenu() {
+    string choice;
+    std::cout << "\nFood Forum\n\n";
+    ifstream file("Topic.txt");
+    string topic;
+    int count = 1;
+    while (!file.eof()) {
+        getline(file, topic);
+        std::cout << count << ". " << topic << endl;
+        count++;
+    }
+    std::cout << endl;
+    std::cout << "Enter \"new\" to enter a new topic: " << endl;
+    cin >> choice;
+    if (choice == "new") {
+        Createtopic();
+    }
+}
+
+void Createtopic() {
+    string topic;
+
+    cout << "\nEnter a new topic: "; cin >> topic;
+
+    ofstream file;
+    file.open("Topic.txt", ios_base::app);
+    file << "\n"<<topic;
+    file.close();
+    cout << "\n";
+    topicmenu();
+}
+
  int main()   {
         string Schoice;
         int choice = 0;
@@ -84,14 +119,12 @@ bool isNumber(string Schoice) {
             if (status == true)
             {
                 cout << "Successfully logged in" << endl;
-                system("pause");
-                return 1;
+                topicmenu();
             }
             else
             {
-                cout << "Failed to login!" << endl;
-                system("Pause");
-                return 0;
+                cout << "Failed to login!\n" << endl;
+                main();
             }
         }
         else
