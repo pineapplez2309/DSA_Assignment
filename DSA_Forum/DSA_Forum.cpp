@@ -1,39 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <regex>
 using namespace std;
-/*
-int main()
-{
-    
-    int choice;
-    cout << "Forum\n" << endl;
-    cout << "1. C++ Programming" << endl;
-    cout << "2. Battle Cats" << endl;
-    cout << "What's your choice?" << endl;
-    cin >> choice;
-    if (choice == 1)
-        cout << "I love C++!";
-    else
-        cout << "CATS!" << endl;
 
-    fstream newfile;
-    newfile.open("Profile.txt", ios::out);  // open a file to perform write operation using file object
-    if (newfile.is_open()) { //checking whether the file is open {
-        newfile << "Username: Denzel Lee \nPassword: Pass123\n";
-    }//inserting text
-        newfile.close(); //close the file object
-    
-    newfile.open("Profile.txt", ios::in); //open a file to perform read operation using file object
-    if (newfile.is_open()) { //checking whether the file is open
-        string tp;
-        while (getline(newfile, tp)) { //read data from file object and put it into string.
-            cout << tp << "\n"; //print the data of the string
-        }
-        newfile.close(); //close the file object.
-    }
-}
-*/
 
 /*bool IsLoggedIn() {
         string username, password, un, pw;
@@ -69,9 +39,27 @@ bool authenticate(const string& username, const string& password) {
     return false;
 }
 
+bool isNumber(string Schoice) {
+    regex e("^-?\\d+");
+    if (regex_match(Schoice, e)) return true;
+    else return false;
+}
+
  int main()   {
-        int choice;
-        cout << "1:Register\n2:Login\nYour Choice: "; cin >> choice;
+        string Schoice;
+        int choice = 0;
+        cout << "1:Register\n2:Login\nYour Choice: "; cin >> Schoice;
+        bool check = isNumber(Schoice);
+        if (check == true)
+        {
+            choice = stoi(Schoice);
+        }
+        else
+        {
+            cout << "Please enter a number!\n";
+            main();
+        }
+       
         if (choice == 1)
         {
             string username, password;
@@ -83,6 +71,7 @@ bool authenticate(const string& username, const string& password) {
             file.open("Profile.txt", ios_base::app);
             file << username << ";" << password << endl;
             file.close();
+            cout << "\n";
             main();
         }
         else if (choice == 2)
@@ -92,7 +81,7 @@ bool authenticate(const string& username, const string& password) {
             cout << "Enter a username: "; cin >> username;
             cout << "Enter a password: "; cin >> password;
             bool status = authenticate(username, password);
-            if (status)
+            if (status == true)
             {
                 cout << "Successfully logged in" << endl;
                 system("pause");
@@ -105,5 +94,11 @@ bool authenticate(const string& username, const string& password) {
                 return 0;
             }
         }
+        else
+        {
+            cout << "Please enter either 1 or 2!\n";
+            main();
+        }
+       
  }
 
