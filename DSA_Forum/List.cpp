@@ -1,7 +1,7 @@
-/*using namespace std;
+using namespace std;
 #include "List.h"
 
-List::List() { size = 0; }
+List::List() { List::size = 0; }
 
 //List::~List() { }
 
@@ -69,14 +69,15 @@ void List::remove(int index)
     }
 }
 
+
 void List::print()
 {
     Node* current = firstNode;
-    for (int i = 0; i <= size; i++) {
+    for (int i = 1; i <= size+1; i++) {
         if (current != NULL) {
-            cout << "Name inside linked list is: ";
+            cout << i<<". ";
             cout << current->item << endl;
             current = current->next;
         }
     }
-}*/
+}

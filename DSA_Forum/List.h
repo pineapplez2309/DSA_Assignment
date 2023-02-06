@@ -1,16 +1,16 @@
-/*#pragma once
+#pragma once
 #include<string>
 #include<iostream>
 using namespace std;
 
 typedef string ItemType;
-template <class T>
+
 class List
 {
 private:
 	struct Node
 	{
-		T item;	// data item
+		ItemType item;	// data item
 		Node* next;	// pointer pointing to next item
 	};
 
@@ -18,7 +18,7 @@ private:
 	int  size;			// number of items in the list
 
 public:
-	List();			// constructor
+	List();
 
 	//~List();
 
@@ -53,6 +53,7 @@ public:
 	// pre : none
 	// post: none
 	// return true if the list is empty; otherwise returns false
+
 	bool isEmpty();
 
 	// check the size of the list
@@ -64,8 +65,9 @@ public:
 	//------------------- Other useful functions -----------------
 
 	// display the items in the list
+
 	void print();
 
 	// void replace(int index, ItemType item);
 	// int search(ItemType item);
-};*/
+};

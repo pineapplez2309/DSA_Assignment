@@ -81,7 +81,7 @@ void Createtopic() {
 }
 
  int main()   {
-        string Schoice;
+        /*string Schoice;
         int choice = 0;
         cout << "1:Register\n2:Login\nYour Choice: "; cin >> Schoice;
         bool check = isNumber(Schoice);
@@ -131,7 +131,14 @@ void Createtopic() {
         {
             cout << "Please enter either 1 or 2!\n";
             main();
-        }
+        }*/
+     List list1;
+
+     list1.add("Banana");
+     list1.add("Chicken");
+     list1.add("Rice");
+
+     list1.print();
        
  }
 
