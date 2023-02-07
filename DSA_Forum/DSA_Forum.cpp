@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 #include <regex>
-#include "List.h"
+#include "List1.h"
 using namespace std;
 
 void Createtopic();
@@ -132,13 +132,25 @@ void Createtopic() {
             cout << "Please enter either 1 or 2!\n";
             main();
         }*/
-     List list1;
+     List<string> list1;
+     List<int> list2;
 
-     list1.add("Banana");
      list1.add("Chicken");
-     list1.add("Rice");
+     list1.add("Banana");
+     list1.add("Prata");
+
+     list2.add(10);
+     list2.add(20);
+     list2.add(30);
 
      list1.print();
+     cout << "\n";
+     list2.print();
+     cout << "\n";
+     
+     cout<<list1.getLength();
+     cout<<list2.getLength();
+
        
  }
 

@@ -1,7 +1,7 @@
 #pragma once
 #include<string>
 #include<iostream>
-using namespace std;
+/*using namespace std;
 
 typedef string ItemType;
 
@@ -70,4 +70,4 @@ public:
 
 	// void replace(int index, ItemType item);
 	// int search(ItemType item);
-};
+};*/

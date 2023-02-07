@@ -1,77 +1,100 @@
 // Testing purposes
 
 
-/*#pragma once
+#pragma once
 #include<string>
 #include<iostream>
 using namespace std;
 
-template< class T >
-class Node {
-public:
-    T item;
-    Node< T >* next;
-};
+
 
 template< class T >
 class List {
+private:
+    struct Node {
+        T item;
+        Node* next;
+    };
+    int size;
+    Node* firstNode;
+
 public:
     int  empty();
-    void add(T item);
-    T    remove();
+    bool add(T item);
+    void remove(int index);
     void print();
-    List() {
-        firstnode = new Node< T >();
-        firstnode->next = firstnode;
-    }
-private:
-    int size;
-    Node< T >* firstnode;
+    List() { List::size = 0; }
+    int getLength();
 };
 
 template< class T >
-void List< T >::add(T item)
+bool List< T >::add(T item)
 {
-    Node< T >* p;
-
-    p = new Node< T >();
-    p->item = item;
-    p->next = firstnode->next;
-    firstnode->next = p;
+    Node* newNode = new Node;
+    newNode->item = item;
+    newNode->next = NULL;
+    if (size == 0) {
+        firstNode = newNode;
+    }
+    else {
+        Node* current = firstNode;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
+    size++;
+    return true;
 }
 
 template< class T >
-T List< T >::remove()
+void List< T >::remove(int index)
 {
-    T item;
-    Node< T >* node;
-
-   
-    node = firstnode->next;
-    item = node->item;
-
-    firstnode->next = node->next;
-    delete node;
-
-    return item;
+    bool success = (index >= 0) && (index < size);
+    if (success)
+    {
+        if (index == 0) {
+            firstNode = firstNode->next;
+        }
+        else {
+            Node* current = firstNode;
+            Node* previous = current;
+            for (index; index > 0; index--) {
+                previous = current;
+                current = current->next;
+                previous->next = current->next;
+            }
+        }
+        size--;
+    }
 }
+
+template <class T>
+int List<T>::getLength() { return size; }
 
 template <class T>
 void List<T>::print()
 {
-    T item;
+    /*T item;
     Node<T>* node;
-    
+    int i = 1;
     node = firstnode->next;
     
 
     while (node->item != NULL)
-    {
-        int i = 1;
+    {      
         item = node->item;
         cout << i << ". " << item << "\n";       
         node = node->next;
         i++;
        
+    }*/
+    Node* current = firstNode;
+    for (int i = 1; i <= size + 1; i++) {
+        if (current != NULL) {
+            cout << i << ". ";
+            cout << current->item << endl;
+            current = current->next;
+        }
     }
-}*/
+}

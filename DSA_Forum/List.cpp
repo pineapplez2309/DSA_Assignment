@@ -1,4 +1,4 @@
-using namespace std;
+/*using namespace std;
 #include "List.h"
 
 List::List() { List::size = 0; }
@@ -80,4 +80,4 @@ void List::print()
             current = current->next;
         }
     }
-}
+}*/
