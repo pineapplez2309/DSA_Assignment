@@ -47,11 +47,27 @@ bool isNumber(string Schoice) {
     else return false;
 }
 
+fstream& GotoLine(fstream& file, unsigned int num) {
+    file.seekg(std::ios::beg);
+    for (int i = 0; i < num - 1; ++i) {
+        file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    return file;
+}
+
+void posts(string topicchoice) {
+    cout << "\n";
+    cout << "\n";
+    cout << "Topic: " + topicchoice << endl;
+    cout << "\n";
+    cout << "Posts:" << endl;
+}
 
 void topicmenu() {
-    string choice;
+    int inttchoice = 0;
+    string tchoice;
     std::cout << "\nFood Forum\n\n";
-    ifstream file("Topic.txt");
+    fstream file("Topic.txt");
     string topic;
     int count = 1;
     while (!file.eof()) {
@@ -61,10 +77,30 @@ void topicmenu() {
     }
     std::cout << endl;
     std::cout << "Enter \"new\" to enter a new topic: " << endl;
-    cin >> choice;
-    if (choice == "new") {
-        Createtopic();
+    cin >> tchoice;
+    bool check = isNumber(tchoice);
+    if (check == false) {
+        if (tchoice == "new") {
+            Createtopic();
+        }
+        else {
+            cout << "Text entered is not an option!" << endl;
+            topicmenu();
+        }
     }
+    else {
+        inttchoice = stoi(tchoice);
+        if (inttchoice > count-1 || inttchoice <= 0) {
+            cout << "Please choose a number that correspond to the choice avaliable!" << endl;
+            topicmenu();
+        }
+        else {
+            string topicchoice;
+            GotoLine(file, inttchoice);
+            file >> topicchoice;
+            posts(topicchoice);
+        }
+    }   
 }
 
 void Createtopic() {
@@ -81,7 +117,7 @@ void Createtopic() {
 }
 
  int main()   {
-        /*string Schoice;
+        string Schoice;
         int choice = 0;
         cout << "1:Register\n2:Login\nYour Choice: "; cin >> Schoice;
         bool check = isNumber(Schoice);
@@ -91,7 +127,7 @@ void Createtopic() {
         }
         else
         {
-            cout << "Please enter a number!\n";
+            cout << "\nPlease enter a number!" << endl;
             main();
         }
        
@@ -129,27 +165,9 @@ void Createtopic() {
         }
         else
         {
-            cout << "Please enter either 1 or 2!\n";
+            cout << "\nPlease enter either 1 or 2!" << endl;
             main();
-        }*/
-     List<string> list1;
-     List<int> list2;
-
-     list1.add("Chicken");
-     list1.add("Banana");
-     list1.add("Prata");
-
-     list2.add(10);
-     list2.add(20);
-     list2.add(30);
-
-     list1.print();
-     cout << "\n";
-     list2.print();
-     cout << "\n";
-     
-     cout<<list1.getLength();
-     cout<<list2.getLength();
+        }
 
        
  }
