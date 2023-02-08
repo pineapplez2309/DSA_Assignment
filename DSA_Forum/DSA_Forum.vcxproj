@@ -135,6 +135,7 @@
     <ClInclude Include="List1.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Chicken.txt" />
     <Text Include="Potato.txt" />
     <Text Include="Profile.txt" />
     <Text Include="Topic.txt" />

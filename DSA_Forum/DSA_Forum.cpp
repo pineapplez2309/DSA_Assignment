@@ -147,7 +147,7 @@ void posts(string topicchoice) {
     cout << "\n";
     cout << "Topic: " + topicchoice << endl;
     cout << "\n";
-    cout << "Posts:" << endl;
+    cout << "Posts:\n\n(Format is:\nTitle:\nUser which posted:\nDate posted:\nTime posted:)" << endl;
     file.open(topicchoice + ".txt");
     while (file) {
         getline(file, posts, '`');

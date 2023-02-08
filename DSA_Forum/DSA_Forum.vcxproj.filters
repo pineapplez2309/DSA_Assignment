@@ -40,5 +40,8 @@
     <Text Include="Potato.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Chicken.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
