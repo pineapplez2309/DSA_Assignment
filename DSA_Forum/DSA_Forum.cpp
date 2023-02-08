@@ -171,4 +171,92 @@ void Createtopic() {
 
        
  }
+ //Creates a post if not found in database.Input is name of topic fileand username.
+ void createPost(string fileName, string username)
+ {
+	 string line;
+	 ifstream file;
+	 string name;
+	 string content;
+	 int counter = 0;
+	 file.open(fileName + ".txt");
+	 if (!file)
+	 {
+		 ofstream file2(fileName + ".txt");
+		 file2.close();
+	 }
+	 file.close();
+	 string postName;
+	 cout << "Topic Name(0 to exit): ";
+	 cin.ignore();
+	 getline(cin, postName);
+	 if (postName != "0")
+	 {
+		 file.open(fileName + ".txt");
+		 while (getline(file, line))
+		 {
+			 string* array = split(line, '`');
+			 if (postName == array[1])
+			 {
+				 cout << "Post already exists!" << endl;
+				 return;
+			 }
+		 }
+		 cout << endl;
+		 ofstream file2;
+		 time_t raw_time;
+		 time(&raw_time);
 
+		 // Convert to tm (struct tm)
+		 tm time_info;
+		 localtime_s(&time_info, &raw_time);
+		 string date = to_string(time_info.tm_mday) + "/" + to_string(time_info.tm_mon + 1) + "/" + to_string(time_info.tm_year + 1900);
+		 string time = to_string(time_info.tm_hour) + ":" + to_string(time_info.tm_min) + ":" + to_string(time_info.tm_sec);
+		 file2.open(fileName + ".txt", ios::app);
+		 string combined = postName + "`" + username + "`" + date + "`" + time + "\n";
+		 file2 << combined;
+		 cout << "Post created" << endl;
+		 file2.close();
+	 }
+
+ }
+ 
+ /*
+ void replyPost(string fileName, string username)
+ {
+	 string line;
+	 ifstream file;
+
+
+	 string name;
+	 string content;
+	 file.open(fileName + ".txt");
+	 if (!file)
+	 {
+		 ofstream file2(fileName + ".txt");
+		 file2.close();
+	 }
+	 ofstream file2;
+	 file2.open(fileName + ".txt", ios::app);
+	 string reply;
+	 cout << "Replying: ";
+	 cin.ignore();
+	 getline(cin, reply);
+	 if (reply != "0")
+	 {
+		 cout << endl;
+		 time_t raw_time;
+		 time(&raw_time);
+
+		 tm time_info;
+		 localtime_s(&time_info, &raw_time);
+		 string date = to_string(time_info.tm_mday) + "/" + to_string(time_info.tm_mon + 1) + "/" + to_string(time_info.tm_year + 1900);
+		 string time = to_string(time_info.tm_hour) + ":" + to_string(time_info.tm_min) + ":" + to_string(time_info.tm_sec);
+		 string combined = to_string(postList.getLength() + 1) + "`" + username + "`" + reply + "`" + date + "`" + time + "\n";
+		 file2 << combined;
+		 cout << "Reply sent" << endl << endl;
+		 file2.close();
+	 }
+
+ }
+ */
