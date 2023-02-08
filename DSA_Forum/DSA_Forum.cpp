@@ -171,6 +171,27 @@ void Createtopic() {
 
        
  }
+ string* split(string str, char del) {
+     string temp = "";
+     static string tempArray[5];
+     int counter = 0;
+     for (int i = 0; i < (int)str.size(); i++) {
+         if (str[i] != del) {
+             temp += str[i];
+         }
+         else {
+             if (str[i] != '\n')
+             {
+                 tempArray[counter] = temp;
+                 temp = "";
+                 counter++;
+             }
+
+         }
+     }
+     tempArray[counter] = temp;
+     return tempArray;
+ }
  //Creates a post if not found in database.Input is name of topic fileand username.
  void createPost(string fileName, string username)
  {
