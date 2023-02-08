@@ -5,7 +5,8 @@
 #include "List1.h"
 using namespace std;
 
-void Createtopic();
+void Createtopic(string username);
+
 
 /*bool IsLoggedIn() {
         string username, password, un, pw;
@@ -27,6 +28,78 @@ void Createtopic();
         }
 }*/
 
+string* split(string str, char del) {
+    string temp = "";
+    static string tempArray[5];
+    int counter = 0;
+    for (int i = 0; i < (int)str.size(); i++) {
+        if (str[i] != del) {
+            temp += str[i];
+        }
+        else {
+            if (str[i] != '\n')
+            {
+                tempArray[counter] = temp;
+                temp = "";
+                counter++;
+            }
+
+        }
+    }
+    tempArray[counter] = temp;
+    return tempArray;
+}
+
+//Creates a post if not found in database.Input is name of topic file and username.
+void createPost(string fileName, string username)
+{
+    string line;
+    ifstream file;
+    string name;
+    string content;
+    int counter = 0;
+    file.open(fileName + ".txt");
+    if (!file)
+    {
+        ofstream file2(fileName + ".txt");
+        file2.close();
+    }
+    file.close();
+    string postName;
+    cout << "Content of post: ";
+    cin.ignore();
+    getline(cin, postName);
+    if (postName != "0")
+    {
+        file.open(fileName + ".txt");
+        while (getline(file, line))
+        {
+            string* array = split(line, '`');
+            if (postName == array[1])
+            {
+                cout << "Post already exists!" << endl;
+                return;
+            }
+        }
+        cout << endl;
+        ofstream file2;
+        time_t raw_time;
+        time(&raw_time);
+
+        // Convert to tm (struct tm)
+        tm time_info;
+        localtime_s(&time_info, &raw_time);
+        string date = to_string(time_info.tm_mday) + "/" + to_string(time_info.tm_mon + 1) + "/" + to_string(time_info.tm_year + 1900);
+        string time = to_string(time_info.tm_hour) + ":" + to_string(time_info.tm_min) + ":" + to_string(time_info.tm_sec);
+        file2.open(fileName + ".txt", ios::app);
+        string combined = "`" + postName + "`" + username + "`" + date + "`" + time + "`" + "\n";
+        file2 << combined;
+        cout << "Post created" << endl;
+        file2.close();
+    }
+
+}
+
 bool authenticate(const string& username, const string& password) {
     std::ifstream file("Profile.txt");
     std::string fusername, fpassword;
@@ -38,6 +111,18 @@ bool authenticate(const string& username, const string& password) {
             return true;
     }
 
+    return false;
+}
+
+bool topiccheck(const string& topic) {
+    ifstream file("Topic.txt");
+    string Topic;
+
+    while (file) {
+        getline(file, Topic);
+        if (Topic == topic)
+            return true;
+    }
     return false;
 }
 
@@ -56,17 +141,25 @@ fstream& GotoLine(fstream& file, unsigned int num) {
 }
 
 void posts(string topicchoice) {
+    ifstream file;
+    string posts;
     cout << "\n";
     cout << "\n";
     cout << "Topic: " + topicchoice << endl;
     cout << "\n";
     cout << "Posts:" << endl;
+    file.open(topicchoice + ".txt");
+    while (file) {
+        getline(file, posts, '`');
+        cout << posts << endl;
+    }
 }
 
-void topicmenu() {
+void topicmenu(string username) {
     int inttchoice = 0;
     string tchoice;
-    std::cout << "\nFood Forum\n\n";
+    std::cout << "\nFood Forum\n" << endl;
+    cout << "Welcome, " + username << endl;
     fstream file("Topic.txt");
     string topic;
     int count = 1;
@@ -77,22 +170,45 @@ void topicmenu() {
     }
     std::cout << endl;
     std::cout << "Enter \"new\" to enter a new topic: " << endl;
+    cout << "Enter \"posts\" to make a new post" << endl;
     cin >> tchoice;
     bool check = isNumber(tchoice);
     if (check == false) {
         if (tchoice == "new") {
-            Createtopic();
+            string Username;
+            Username = username;
+            Createtopic(Username);
+        }
+        else if (tchoice == "posts") {
+            string Username;
+            string Tchoice;
+            Username = username;
+            cout << "Enter the topic to make a post for: ";
+            cin >> Tchoice;
+            bool status = topiccheck(Tchoice);
+            if (status == false) {
+                cout << "Please enter a topic that exsits!";
+                topicmenu(Username);
+            }
+            else {
+                createPost(Tchoice, Username);
+
+            }    
         }
         else {
             cout << "Text entered is not an option!" << endl;
-            topicmenu();
+            string Username;
+            Username = username;
+            topicmenu(Username);
         }
     }
     else {
         inttchoice = stoi(tchoice);
         if (inttchoice > count-1 || inttchoice <= 0) {
             cout << "Please choose a number that correspond to the choice avaliable!" << endl;
-            topicmenu();
+            string Username;
+            Username = username;
+            topicmenu(Username);
         }
         else {
             string topicchoice;
@@ -103,7 +219,7 @@ void topicmenu() {
     }   
 }
 
-void Createtopic() {
+void Createtopic(string username) {
     string topic;
 
     cout << "\nEnter a new topic: "; cin >> topic;
@@ -113,7 +229,9 @@ void Createtopic() {
     file << "\n"<<topic;
     file.close();
     cout << "\n";
-    topicmenu();
+    string Username;
+    Username = username;
+    topicmenu(Username);
 }
 
  int main()   {
@@ -155,7 +273,7 @@ void Createtopic() {
             if (status == true)
             {
                 cout << "Successfully logged in" << endl;
-                topicmenu();
+                topicmenu(username);
             }
             else
             {
@@ -171,76 +289,8 @@ void Createtopic() {
 
        
  }
- string* split(string str, char del) {
-     string temp = "";
-     static string tempArray[5];
-     int counter = 0;
-     for (int i = 0; i < (int)str.size(); i++) {
-         if (str[i] != del) {
-             temp += str[i];
-         }
-         else {
-             if (str[i] != '\n')
-             {
-                 tempArray[counter] = temp;
-                 temp = "";
-                 counter++;
-             }
 
-         }
-     }
-     tempArray[counter] = temp;
-     return tempArray;
- }
- //Creates a post if not found in database.Input is name of topic fileand username.
- void createPost(string fileName, string username)
- {
-	 string line;
-	 ifstream file;
-	 string name;
-	 string content;
-	 int counter = 0;
-	 file.open(fileName + ".txt");
-	 if (!file)
-	 {
-		 ofstream file2(fileName + ".txt");
-		 file2.close();
-	 }
-	 file.close();
-	 string postName;
-	 cout << "Topic Name(0 to exit): ";
-	 cin.ignore();
-	 getline(cin, postName);
-	 if (postName != "0")
-	 {
-		 file.open(fileName + ".txt");
-		 while (getline(file, line))
-		 {
-			 string* array = split(line, '`');
-			 if (postName == array[1])
-			 {
-				 cout << "Post already exists!" << endl;
-				 return;
-			 }
-		 }
-		 cout << endl;
-		 ofstream file2;
-		 time_t raw_time;
-		 time(&raw_time);
 
-		 // Convert to tm (struct tm)
-		 tm time_info;
-		 localtime_s(&time_info, &raw_time);
-		 string date = to_string(time_info.tm_mday) + "/" + to_string(time_info.tm_mon + 1) + "/" + to_string(time_info.tm_year + 1900);
-		 string time = to_string(time_info.tm_hour) + ":" + to_string(time_info.tm_min) + ":" + to_string(time_info.tm_sec);
-		 file2.open(fileName + ".txt", ios::app);
-		 string combined = postName + "`" + username + "`" + date + "`" + time + "\n";
-		 file2 << combined;
-		 cout << "Post created" << endl;
-		 file2.close();
-	 }
-
- }
  
  /*
  void replyPost(string fileName, string username)
