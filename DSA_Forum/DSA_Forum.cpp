@@ -102,6 +102,7 @@ void createPost(string fileName, string username)
         file2 << combined;
         cout << "Post created" << endl;
         file2.close();
+        posts(username, fileName);
     }
 
 }
@@ -264,6 +265,35 @@ void PostReply(string fileName, string username)
 
 }
 
+void search(string username,string topicchoice) {
+    ifstream file;
+    string Search;
+    string result;
+    string result2;
+    int offset;
+    int i = 1;
+    file.open(topicchoice + ".txt");
+    cout << "Type the word you would like to search (Case senstitive): ";
+    cout << "\n";
+    cin >> Search;
+    cout << "\n";
+    while (!file.eof()) {
+        getline(file, result, '`');
+        result2 = result;
+        auto noSpaceEnd = std::remove(result2.begin(), result2.end(), ' ');
+        result2.erase(noSpaceEnd, result2.end());
+        if (offset = result.find(Search, 0) != string::npos) {
+            cout << i << ". " << result << " (Copy and paste if you want to reply to this topic: " << result2 << ")" << endl;
+            i++;
+        }
+    }
+    cout << "\n";
+    string Username;
+    Username = username;
+    posts(Username, topicchoice);
+
+}
+
 void posts(string username, string topicchoice) {
     string replychoice;
     ifstream file;
@@ -278,7 +308,7 @@ void posts(string username, string topicchoice) {
         getline(file, Posts, '`');
         cout << Posts << endl;
     }
-    cout << "\nEnter \"reply\" to make a reply or \"back\" to go back: ";
+    cout << "\nEnter \"reply\" to make a reply, \"search\" to search or \"back\" to go back: ";
     cin >> replychoice;
     bool check = isNumber(replychoice);
     if (check == false) {
@@ -306,6 +336,13 @@ void posts(string username, string topicchoice) {
             string Username;
             Username = username;
             topicmenu(Username);
+        }
+        else if (replychoice == "search") {
+            string Topicchoice;
+            Topicchoice = topicchoice;
+            string Username;
+            Username = username;
+            search(Username, Topicchoice);
         }
         else {
             cout << "Please enter a valid option!\n" << endl;
