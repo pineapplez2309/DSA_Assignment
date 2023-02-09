@@ -506,3 +506,160 @@ void Createtopic(string username) {
 
 
  }
+ //Delete a reply to a post if owner of reply. Input is name of post file, username and contents of post.
+ template<class T>
+ void deleteReply(string fileName, string username, List<string> postList)
+ {
+     string line;
+     ifstream file;
+     string name;
+     string content;
+     file.open(fileName + ".txt");
+     if (!file)
+     {
+         ofstream file2(fileName + ".txt");
+         file2.close();
+     }
+     file.close();
+
+     string reply;
+     cout << "Choose reply to delete(0 to exit): ";
+     int choice;
+     cin >> choice;
+     if (choice == 0)
+     {
+
+     }
+     else
+     {
+         string* array = split(postList.get(choice - 1), '`');
+         if (array[1] == username) //Author
+         {
+
+             postList.remove(choice - 1);
+             ofstream file2;
+             file2.open(fileName + ".txt");
+             file2.close(); //Reset contents
+
+             file2.open(fileName + ".txt", ios::app);
+             for (int i = 0; i < postList.getLength(); i++)
+             {
+                 file2 << postList.get(i);
+             }
+
+             file2.close();
+
+
+         }
+         else //Not author
+         {
+             cout << "You are not the author of this reply." << endl;
+         }
+     }
+
+
+
+
+
+ }
+ //Delete a post if owner of post, input is name of post file. return deletion status
+ int deletePost(string fileName)
+ {
+     fileName += ".txt";
+     char* char_array = new char[fileName.length() + 1];
+     char_array[fileName.length()] = '\0';
+     for (int i = 0; i < fileName.length(); i++) {
+         char_array[i] = fileName[i];
+     }
+     int status = remove(char_array);
+     delete[] char_array;
+     return status;
+ }
+ //Edit a post if owner of post, input is name of post file, username, lists of post, contents of post file. returns name of new file
+ template<class T>
+ string editPost(string fileName, string username, List<string> postList, List<string> topicContentList)
+ {
+     cout << "Editing post(0 to exit): ";
+     string* array = split(fileName, '`');
+     string edit;
+     cin.ignore();
+     getline(cin, edit);
+     if (edit != "0")
+     {
+         string line;
+         ifstream file;
+         string name;
+         string content;
+         string newFileName = array[0] + "`" + edit + "`" + username;
+         file.open(newFileName + ".txt");
+         if (!file)
+         {
+             ofstream file2(newFileName + ".txt");
+             file2.close();
+             file2.open(newFileName + ".txt", ios::app);
+             for (int i = 0; i < postList.getLength(); i++)
+             {
+                 file2 << postList.get(i);
+
+             }
+
+             file2.close();
+             int status = deletePost(fileName);
+             if (status == 0)
+             {
+
+                 string* array = split(fileName, '`');
+                 file.open(array[0] + ".txt");
+                 int i = 0;
+                 while (getline(file, line))
+                 {
+                     if (line == array[1] + "`" + array[2])
+                     {
+                         string* array = split(newFileName, '`');
+                         topicContentList.remove(i);
+                         if (i == topicContentList.getLength())
+                         {
+                             topicContentList.add(array[1] + "`" + array[2]);
+                         }
+                         else
+                         {
+                             topicContentList.add(i, array[1] + "`" + array[2]);
+                         }
+                     }
+                     i++;
+                 }
+                 file.close();
+                 file2.open(array[0] + ".txt");
+                 file2.close(); //remove content of file
+
+                 file2.open(array[0] + ".txt", ios::app);
+
+                 for (int i = 0; i < topicContentList.getLength(); i++)
+                 {
+                     file2 << topicContentList.get(i) << "\n";
+
+                 }
+                 file2.close();
+                 cout << "Post edited successfully!" << endl;
+
+             }
+
+             else
+             {
+                 cout << "Error occurred!" << endl;
+
+             }
+             //return newFileName;
+
+         }
+         else
+         {
+             cout << "Post already exists" << endl;
+         }
+
+
+
+
+     }
+     return fileName;
+ }
