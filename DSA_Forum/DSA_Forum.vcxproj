@@ -137,6 +137,7 @@
   <ItemGroup>
     <Text Include="Chicken.txt" />
     <Text Include="Potato.txt" />
+    <Text Include="PotatoReply.txt" />
     <Text Include="Profile.txt" />
     <Text Include="Topic.txt" />
   </ItemGroup>
