@@ -21,7 +21,9 @@ private:
 public:
     int  empty();
     bool add(T item);
+    bool add(int index, T item);
     void remove(int index);
+    string get(int index);
     void print();
     List() { List::size = 0; }
     int getLength();

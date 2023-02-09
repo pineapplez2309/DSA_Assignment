@@ -7,6 +7,8 @@ using namespace std;
 
 void Createtopic(string username);
 
+void editReply(string fileName, string username, List<string> postList);
+
 
 /*bool IsLoggedIn() {
         string username, password, un, pw;
@@ -290,15 +292,55 @@ void Createtopic(string username) {
        
  }
 
+ //Displays content of selected post. Input is name of post file. Returns Lists of replies
+ List<string> DisplayContent(string fileName)
+ {
+     string line;
+     ifstream file;
+     string name;
+     string username;
+     string content;
+     int counter = 0;
+     List<string> postList;
+     file.open(fileName + ".txt");
+     if (!file)
+     {
+         ofstream file2(fileName + ".txt");
+         file2.close();
+     }
+     cout << fileName;
+     string* array = split(fileName, '`');
+     name = array[1];
+     username = array[2];
 
+
+     cout << name << endl << "------------------------------------------------------------------------------------" << endl;
+
+     while (getline(file, line))
+     {
+         string* array = split(line, '`');
+         name = array[1];
+         content = array[2];
+         string date = array[3];
+         string time = array[4];
+         string combined = to_string(counter + 1) + "`" + name + "`" + content + "`" + date + "`" + time + "\n";
+         cout << to_string(counter + 1) << ". " << name << ": " << content << "\t\t\t\t\t\t" << date << " " << time << endl;
+
+         postList.add(combined);
+
+
+         counter++;
+
+     }
+     file.close();
+     return postList;
+ }
  
- /*
- void replyPost(string fileName, string username)
+ void PostReply(string fileName, string username)
  {
 	 string line;
 	 ifstream file;
-
-
+     List<string> postList;
 	 string name;
 	 string content;
 	 file.open(fileName + ".txt");
@@ -330,4 +372,65 @@ void Createtopic(string username) {
 	 }
 
  }
- */
+ void editReply(string fileName, string username, List<string> postList)
+ {
+     string line;
+     ifstream file;
+     string name;
+     string content;
+     file.open(fileName + ".txt");
+     if (!file)
+     {
+         ofstream file2(fileName + ".txt");
+         file2.close();
+     }
+     file.close();
+
+     string reply;
+     cout << "Choose reply to edit: ";
+     string choice;
+     cin >> choice;
+     cout << endl;
+     string* array = split(postList.get(stoi(choice) - 1), '`');
+     if (array[1] == username) //Author
+     {
+         cout << "Edited reply: ";
+         string editedReply;
+         cin.ignore();
+         getline(cin, editedReply);
+         cout << endl;
+         postList.remove(stoi(choice) - 1);
+         string combined = array[0] + "`" + username + "`" + editedReply + "`" + array[2] + "`" + array[3] + "\n";
+         if (stoi(choice) == postList.getLength() + 1)
+         {
+             postList.add(combined);
+         }
+         else
+         {
+             postList.add(stoi(choice) - 1, combined);
+         }
+
+         ofstream file2;
+
+         file2.open(fileName + ".txt");
+         file2.close(); //remove content of file
+
+         file2.open(fileName + ".txt", ios::app);
+
+         for (int i = 0; i < postList.getLength(); i++)
+         {
+             file2 << postList.get(i);
+
+         }
+         cout << "Edited" << endl << endl;;
+         file2.close();
+     }
+     else //Not author
+     {
+         cout << "You are not the author!" << endl;
+     }
+
+
+
+
+ }
