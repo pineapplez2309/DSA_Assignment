@@ -108,7 +108,7 @@ void createPost(string fileName, string username)
 }
 
 //Delete a post if owner of post, input is name of post file. return deletion status
-int deletePost(string fileName)
+bool deletePost(string fileName)
 {
     fileName += ".txt";
     char* char_array = new char[fileName.length() + 1];
@@ -116,7 +116,7 @@ int deletePost(string fileName)
     for (int i = 0; i < fileName.length(); i++) {
         char_array[i] = fileName[i];
     }
-    int status = remove(char_array);
+    bool status = remove(char_array);
     delete[] char_array;
     return status;
 }
@@ -396,7 +396,7 @@ void search(string username,string topicchoice) {
 
 }
 
-template<class T>
+
 void posts(string username, string topicchoice) {
     string replychoice;
     ifstream file;
@@ -411,7 +411,7 @@ void posts(string username, string topicchoice) {
         getline(file, Posts, '`');
         cout << Posts << endl;
     }
-    cout << "\nEnter \"reply\" to make a reply, \"search\" to search, \"edit\" to edit post or \"back\" to go back: ";
+    cout << "\nEnter \"reply\" to make a reply, \"search\" to search, \"edit\" to edit post, \"delete\" to delete a post or \"back\" to go back: ";
     cin >> replychoice;
     bool check = isNumber(replychoice);
     if (check == false) {
@@ -420,7 +420,6 @@ void posts(string username, string topicchoice) {
             cout << "Enter name of post you would like to reply too (Without spaces and case sensitive E.g.,Muttoncurryforpotato): ";
             cin >> pchoice;
             bool status = postcheck(topicchoice,pchoice);
-            cout << status << endl;
             if (status == false) {
                 string Username;
                 string Topicchoice;
@@ -448,7 +447,7 @@ void posts(string username, string topicchoice) {
             search(Username, Topicchoice);
         }
         else if (replychoice == "edit") {
-            string result;
+            /*string result;
             string Topicchoice;
             Topicchoice = topicchoice;
             string Username;
@@ -459,7 +458,18 @@ void posts(string username, string topicchoice) {
                 getline(file, result, '`');
                 Postlist.add(result);
             }
-            editPost(Topicchoice, Username, Postlist);
+            editPost(Topicchoice, Username, Postlist);*/
+        }
+        else if (replychoice == "delete") {
+            string Topicchoice;
+            Topicchoice = topicchoice;
+            bool status = deletePost(Topicchoice);
+            if (status == true) {
+                cout << "Delete success" << endl;
+            }
+            else {
+                cout << "Delete failed" << endl;
+            }
         }
         else {
             cout << "Please enter a valid option!\n" << endl;

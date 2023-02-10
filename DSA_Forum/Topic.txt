@@ -3,3 +3,5 @@ Banana
 Laksa
 Chicken
 Potato
+Fish
+Beef
