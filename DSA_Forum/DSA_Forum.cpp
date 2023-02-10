@@ -107,6 +107,108 @@ void createPost(string fileName, string username)
 
 }
 
+//Delete a post if owner of post, input is name of post file. return deletion status
+int deletePost(string fileName)
+{
+    fileName += ".txt";
+    char* char_array = new char[fileName.length() + 1];
+    char_array[fileName.length()] = '\0';
+    for (int i = 0; i < fileName.length(); i++) {
+        char_array[i] = fileName[i];
+    }
+    int status = remove(char_array);
+    delete[] char_array;
+    return status;
+}
+
+//Edit a post if owner of post, input is name of post file, username, lists of post, contents of post file. returns name of new file
+template<class T>
+void editPost(string fileName, string username, List<string> topicContentList)
+{
+    cout << "Editing post(0 to exit): ";
+    string* array = split(fileName, '`');
+    string edit;
+    cin.ignore();
+    getline(cin, edit);
+    if (edit != "0")
+    {
+        string line;
+        ifstream file;
+        string name;
+        string content;
+        string newFileName = array[0] + "`" + edit + "`" + username;
+        file.open(newFileName + ".txt");
+        if (!file)
+        {
+            ofstream file2(newFileName + ".txt");
+            file2.close();
+            file2.open(newFileName + ".txt", ios::app);
+            for (int i = 0; i < topicContentList.getLength(); i++)
+            {
+                file2 << topicContentList.get(i);
+
+            }
+
+            file2.close();
+            int status = deletePost(fileName);
+            if (status == 0)
+            {
+
+                string* array = split(fileName, '`');
+                file.open(array[0] + ".txt");
+                int i = 0;
+                while (getline(file, line))
+                {
+                    if (line == array[1] + "`" + array[2])
+                    {
+                        string* array = split(newFileName, '`');
+                        topicContentList.remove(i);
+                        if (i == topicContentList.getLength())
+                        {
+                            topicContentList.add(array[1] + "`" + array[2]);
+                        }
+                        else
+                        {
+                            topicContentList.add(i, array[1] + "`" + array[2]);
+                        }
+                    }
+                    i++;
+                }
+                file.close();
+                file2.open(array[0] + ".txt");
+                file2.close(); //remove content of file
+
+                file2.open(array[0] + ".txt", ios::app);
+
+                for (int i = 0; i < topicContentList.getLength(); i++)
+                {
+                    file2 << topicContentList.get(i) << "\n";
+
+                }
+                file2.close();
+                cout << "Post edited successfully!" << endl;
+
+            }
+
+            else
+            {
+                cout << "Error occurred!" << endl;
+
+            }
+            //return newFileName;
+
+        }
+        else
+        {
+            cout << "Post already exists" << endl;
+        }
+
+
+
+
+    }
+}
+
 bool authenticate(const string& username, const string& password) {
     std::ifstream file("Profile.txt");
     std::string fusername, fpassword;
@@ -294,6 +396,7 @@ void search(string username,string topicchoice) {
 
 }
 
+template<class T>
 void posts(string username, string topicchoice) {
     string replychoice;
     ifstream file;
@@ -308,7 +411,7 @@ void posts(string username, string topicchoice) {
         getline(file, Posts, '`');
         cout << Posts << endl;
     }
-    cout << "\nEnter \"reply\" to make a reply, \"search\" to search or \"back\" to go back: ";
+    cout << "\nEnter \"reply\" to make a reply, \"search\" to search, \"edit\" to edit post or \"back\" to go back: ";
     cin >> replychoice;
     bool check = isNumber(replychoice);
     if (check == false) {
@@ -343,6 +446,20 @@ void posts(string username, string topicchoice) {
             string Username;
             Username = username;
             search(Username, Topicchoice);
+        }
+        else if (replychoice == "edit") {
+            string result;
+            string Topicchoice;
+            Topicchoice = topicchoice;
+            string Username;
+            Username = username;
+            List<string> Postlist;
+            file.open(topicchoice + ".txt");
+            while (!file.eof()) {
+                getline(file, result, '`');
+                Postlist.add(result);
+            }
+            editPost(Topicchoice, Username, Postlist);
         }
         else {
             cout << "Please enter a valid option!\n" << endl;
@@ -599,21 +716,9 @@ void Createtopic(string username) {
 
 
  }
- //Delete a post if owner of post, input is name of post file. return deletion status
- int deletePost(string fileName)
- {
-     fileName += ".txt";
-     char* char_array = new char[fileName.length() + 1];
-     char_array[fileName.length()] = '\0';
-     for (int i = 0; i < fileName.length(); i++) {
-         char_array[i] = fileName[i];
-     }
-     int status = remove(char_array);
-     delete[] char_array;
-     return status;
- }
+
  //Edit a post if owner of post, input is name of post file, username, lists of post, contents of post file. returns name of new file
- template<class T>
+ /*template<class T>
  string editPost(string fileName, string username, List<string> postList, List<string> topicContentList)
  {
      cout << "Editing post(0 to exit): ";
@@ -699,4 +804,4 @@ void Createtopic(string username) {
 
      }
      return fileName;
- }
+ }*/

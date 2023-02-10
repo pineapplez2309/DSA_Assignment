@@ -27,6 +27,7 @@ public:
     void print();
     List() { List::size = 0; }
     int getLength();
+    void editPost(string fileName, string username, List<string> topicContentList);
 };
 
 template< class T >
@@ -100,3 +101,10 @@ void List<T>::print()
         }
     }
 }
+
+template <class T>
+void List<T>::editPost(string fileName, string username, List<string> topicContentList)
+{
+
+}
+
